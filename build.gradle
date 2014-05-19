@@ -1,14 +1,24 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
+apply plugin: 'application'
+
 sourceCompatibility = '1.8'
+mainClassName = "com.lpedrosa.SurveyAppApplication"
+
+run {
+    if(project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.5'
+    compile 'io.dropwizard:dropwizard-core:0.7.0'
 
     testCompile 'junit:junit:4.11'
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml">
+    <property name="retryResponse" expr="Please press 1. for yes or press 2. for no" />
+    <form id="yes-no-form">
+        <field name="response">
+            <grammar xml:lang="en-us" root="TOPLEVEL" mode="dtmf">
+                <rule id="TOPLEVEL" scope="public">
+                    <one-of>
+                        <item> 1 </item>
+                        <item> 2 </item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <prompt>
+                <value expr="question" />
+            </prompt>
+
+            <noinput>
+                <prompt>
+                    <value expr="retryResponse" />
+                </prompt>
+                <reprompt/>
+            </noinput>
+
+            <noinput>
+                <prompt>
+                    <value expr="retryResponse" />
+                </prompt>
+                <reprompt/>
+            </noinput>
+
+            <filled>
+                <return namelist="response" />
+            </filled>
+        </field>
+    </form>
+</vxml>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.1" xmlns="http://www.w3.org/2001/vxml">
+    <var name="resultArray" />
+    <form id="My_Survey">
+        <block name="Intro">
+            <prompt>
+                This is a survey about your food preferences.
+                Please reply to the questions below by pressing 1. for yes
+                and pressing 2. for no.
+            </prompt>
+            <goto nextitem="Question_1" />
+        </block>
+        <subdialog name="Question_1" src="base_yes_no_structure.xml">
+            <param name="question" expr="Do you like fruit?" />
+            <filled>
+                <assign name="resultArray" expr="Question_1.response" />
+                <prompt>
+                    You replied <value expr="Question_1.response" />.
+                </prompt>
+            </filled>
+            <goto nextitem="Question_2" />
+        </subdialog>
+        <subdialog name="Question_2" src="base_yes_no_structure.xml">
+            <param name="question" expr="Do you like fish?" />
+            <filled>
+                <prompt>
+                    You replied <value expr="Question_2.response" />.
+                </prompt>
+            </filled>
+            <goto nextitem="Question_3" />
+        </subdialog>
+        <subdialog name="Question_3" src="base_yes_no_structure.xml">
+            <param name="question" expr="Do you like chocolate?" />
+            <filled>
+                <prompt>
+                    You replied <value expr="Question_3.response" />.
+                </prompt>
+            </filled>
+            <goto nextitem="Finish" />
+        </subdialog>
+        <block name="Finish">
+            <prompt>
+                Thank you for completing our survey about food preferences.
+            </prompt>
+            <submit next="localhost:8080/survey/submit"
+                    method="post" />
+        </block>
+    </form>
+</vxml>
+
