@@ -1,17 +1,17 @@
 package com.lpedrosa.survey.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Map;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.lpedrosa.survey.model.Survey;
 
 public class SurveyFetcherTest {
 
@@ -28,7 +28,7 @@ public class SurveyFetcherTest {
         SurveyFetcher surveyFetcher = new SurveyFetcherImpl(testPath);
 
         // when
-        long count = surveyFetcher.fetchSurveyFilenames().count();
+        long count = surveyFetcher.fetchSurveys().count();
 
         // then
         assertEquals(1, count);
@@ -40,11 +40,23 @@ public class SurveyFetcherTest {
         SurveyFetcher surveyFetcher = new SurveyFetcherImpl(testPath);
 
         // when
-        long count = surveyFetcher.fetchSurveyFilenames()
+        long count = surveyFetcher.fetchSurveys()
+                                  .map(Survey::getId)
                                   .map(surveyFetcher::fetch)
                                   .filter(Optional::isPresent)
                                   .count();
 
         assertEquals(1, count);
+    }
+
+    @Test
+    public void shouldGetMeAnEmptyOptionalIfSurveyDoesNotExist() throws IOException {
+        // given
+        SurveyFetcher surveyFetcher = new SurveyFetcherImpl(testPath);
+
+        // when
+        boolean exists = surveyFetcher.fetch(-1L).isPresent();
+
+        assertFalse(exists);
     }
 }
