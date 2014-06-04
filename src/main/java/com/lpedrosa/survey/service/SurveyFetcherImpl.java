@@ -69,7 +69,7 @@ public class SurveyFetcherImpl implements SurveyFetcher {
             long index = idGenerator.incrementAndGet();
             filenameIndex.put(index, new Survey(index, filename, bArr));
             success = true;
-        } catch(IOException e) {
+        } catch (IOException e) {
             log.warn("Failed to load vxml file", e);
         }
         return success;
