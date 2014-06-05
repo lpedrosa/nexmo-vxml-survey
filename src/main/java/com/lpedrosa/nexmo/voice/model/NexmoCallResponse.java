@@ -59,8 +59,8 @@ public final class NexmoCallResponse {
             this.description = description;
         }
 
-        public static Optional<CallStatus> getByStatusCode(Integer statusCode) {
-            return Optional.ofNullable(statusCodeLookup.get(statusCode));
+        public static Optional<CallStatus> getByStatusCode(Integer code) {
+            return Optional.ofNullable(statusCodeLookup.get(code));
         }
 
         public Integer getStatusCode() {
