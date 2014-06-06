@@ -3,11 +3,13 @@ package com.lpedrosa.nexmo.voice.service;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.lpedrosa.common.http.HttpOperations;
+import com.lpedrosa.common.util.Try;
 import com.lpedrosa.nexmo.voice.model.NexmoCallResponse;
 import com.lpedrosa.nexmo.voice.model.NexmoCallResponse.CallStatus;
 
@@ -55,7 +57,8 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
     public NexmoCallResponse callAndForwardToVXML(String from,
                                                   String to,
                                                   Optional<String> VXMLLocation) throws NexmoVoiceException {
-
+        Objects.requireNonNull(from);
+        Objects.requireNonNull(to);
         String requestUrl = BASE_URL + responseType.getUrlCommand();
 
         Map<String, String> requestBody = buildRequestBody(from, to, VXMLLocation);
@@ -101,12 +104,14 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
     }
 
     private NexmoCallResponse unpackCallResponse(Map<String, Object> responseMap) throws NexmoVoiceException {
-
-        String callId = getOrThrow(responseMap, "call-id");
-        String recipient = getOrThrow(responseMap, "to");
+        @SuppressWarnings("unchecked")
+        Optional<String> callId = (Optional<String>) getAsOptional(responseMap, "call-id");
+        @SuppressWarnings("unchecked")
+        Optional<Integer> recipient = (Optional<Integer>) getAsOptional(responseMap, "to");
+        @SuppressWarnings("unchecked")
+        Optional<String> errorText = (Optional<String>) getAsOptional(responseMap, "error-text");
         CallStatus callStatus = getAsOptional(responseMap, "status").flatMap(this::convertToCallStatus)
                                                                     .orElseThrow(() -> new NexmoVoiceException("Failed to unpack response: missing parameter status"));
-        String errorText = getOrThrow(responseMap, "error-text");
         return new NexmoCallResponse(callId,
                                      recipient,
                                      callStatus,
@@ -117,15 +122,12 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
         return Optional.ofNullable(map.get(key));
     }
 
-    private <T> T getOrThrow(Map<String, ?> map, String key) throws NexmoVoiceException {
-        @SuppressWarnings("unchecked")
-        T result = (T) Optional.ofNullable(map.get(key))
-                               .orElseThrow(() -> new NexmoVoiceException("Failed to unpack response: missing parameter: " + key));
-        return result;
-    }
-
     private Optional<CallStatus> convertToCallStatus(Object status) {
-        return CallStatus.getByStatusCode(Integer.parseInt((String)status));
+        Integer value = Try.success(status)
+                           .map(obj -> (String)obj)
+                           .map(Integer::parseInt)
+                           .orElseGet(() -> (Integer)status);
+        return CallStatus.getByStatusCode(value);
     }
 
     public String getApiKey() {
