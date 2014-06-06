@@ -22,7 +22,10 @@ eclipse {
 }
 
 dependencies {
-    compile 'org.apache.httpcomponents:fluent-hc:4.3.3'
+    
+    compile 'com.sparkjava:spark-core:2.0.0'
+    
+    compile 'org.apache.httpcomponents:fluent-hc:4.3.2'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.4.0'
 
     compile 'org.slf4j:log4j-over-slf4j:1.7.7'
