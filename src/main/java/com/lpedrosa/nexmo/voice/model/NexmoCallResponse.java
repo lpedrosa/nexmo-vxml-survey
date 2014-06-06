@@ -5,23 +5,26 @@ import java.util.Map;
 import java.util.Optional;
 
 public final class NexmoCallResponse {
-    private final String callId;
-    private final String recipient;
+    private final Optional<String> callId;
+    private final Optional<Integer> recipient;
     private final CallStatus callStatus;
-    private final String errorText;
+    private final Optional<String> errorText;
 
-    public NexmoCallResponse(String callId, String recipient, CallStatus callStatus, String errorText) {
+    public NexmoCallResponse(Optional<String> callId,
+                             Optional<Integer> recipient,
+                             CallStatus callStatus,
+                             Optional<String> errorText) {
         this.callId = callId;
         this.recipient = recipient;
         this.callStatus = callStatus;
         this.errorText = errorText;
     }
 
-    public String getCallId() {
+    public Optional<String> getCallId() {
         return this.callId;
     }
 
-    public String getRecipient() {
+    public Optional<Integer> getRecipient() {
         return this.recipient;
     }
 
@@ -29,7 +32,7 @@ public final class NexmoCallResponse {
         return this.callStatus;
     }
 
-    public String getErrorText() {
+    public Optional<String> getErrorText() {
         return this.errorText;
     }
 
@@ -70,5 +73,19 @@ public final class NexmoCallResponse {
         public String getDescription() {
             return this.description;
         }
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder("NexmoCallResponse[").append("callId: ")
+                                                      .append(this.callId.orElse("FAILED"))
+                                                      .append(" :: recipient: ")
+                                                      .append(this.recipient.orElse(-1))
+                                                      .append(" :: callStatus: ")
+                                                      .append(this.callStatus.getDescription())
+                                                      .append(" :: errorText: ")
+                                                      .append(this.errorText.orElse(" "))
+                                                      .append("]")
+                                                      .toString();
     }
 }

@@ -65,7 +65,7 @@ public class NexmoVoiceOperationsTest {
                                                                VALID_ADDRESS,
                                                                VXML_LOCATION);
         // then
-        assertEquals(VALID_ADDRESS, response.getRecipient());
+        assertEquals(VALID_ADDRESS, response.getRecipient().get());
         assertEquals(CallStatus.SUCCESS, response.getCallStatus());
     }
 
