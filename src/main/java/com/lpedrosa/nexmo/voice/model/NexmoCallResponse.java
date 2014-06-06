@@ -84,7 +84,7 @@ public final class NexmoCallResponse {
                                                       .append(" :: callStatus: ")
                                                       .append(this.callStatus.getDescription())
                                                       .append(" :: errorText: ")
-                                                      .append(this.errorText.orElse(" "))
+                                                      .append(this.errorText.orElse("NONE"))
                                                       .append("]")
                                                       .toString();
     }
