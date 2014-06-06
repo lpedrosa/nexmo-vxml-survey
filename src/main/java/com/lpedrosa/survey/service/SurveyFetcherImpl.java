@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
@@ -26,6 +27,7 @@ public class SurveyFetcherImpl implements SurveyFetcher {
     private final AtomicLong idGenerator;
 
     public SurveyFetcherImpl(URI uri) throws IOException {
+        Objects.requireNonNull(uri);
         this.filenameIndex = new HashMap<>();
         this.idGenerator = new AtomicLong();
         try {
