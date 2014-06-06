@@ -6,7 +6,7 @@ apply plugin: 'eclipse'
 apply plugin: 'application'
 
 sourceCompatibility = '1.8'
-mainClassName = "com.lpedrosa.SurveyAppApplication"
+mainClassName = 'com.lpedrosa.app.Application'
 
 
 repositories {
@@ -28,7 +28,8 @@ dependencies {
     compile 'org.apache.httpcomponents:fluent-hc:4.3.2'
     compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.4.0'
 
-    compile 'org.slf4j:log4j-over-slf4j:1.7.7'
+    compile 'org.slf4j:slf4j-api:1.7.7'
+    runtime 'org.slf4j:slf4j-jdk14:1.7.7'
     
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
