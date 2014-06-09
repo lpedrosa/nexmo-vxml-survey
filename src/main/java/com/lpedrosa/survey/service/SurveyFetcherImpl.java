@@ -57,6 +57,7 @@ public class SurveyFetcherImpl implements SurveyFetcher {
     }
 
     private void loadSurveys(URI uri) throws Exception {
+        log.info("Loading surveys from {}", uri.toString());
         Path path = Paths.get(uri);
         try (DirectoryStream<Path> dir = Files.newDirectoryStream(path, "*.xml")) {
             dir.forEach(this::loadFileIntoCache);

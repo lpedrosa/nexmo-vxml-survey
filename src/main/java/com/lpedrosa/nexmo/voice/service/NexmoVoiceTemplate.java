@@ -39,7 +39,8 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
                               HttpOperations httpOperations,
                               Optional<String> errorCallbackUrl,
                               Optional<String> statusCallbackUrl) {
-        Objects.requireNonNull(apiKey);
+        Objects.requireNonNull(apiKey, "You need to provide an api key!");
+        Objects.requireNonNull(apiSecret, "You need to provide an api Secret");
 
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;

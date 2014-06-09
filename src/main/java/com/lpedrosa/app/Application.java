@@ -32,13 +32,8 @@ public final class Application {
 
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    public static final String API_KEY = "de74db5d";
-    public static final String API_SECRET = "d69446f1";
-
     public static final String DEFAULT_HOST = "127.0.0.1";
     public static final String DEFAULT_PORT = "9000";
-
-    public static final String BASIC_VXML_FETCH_PATH = "0.0.0.0:4567/survey/fetch/";
 
     public static void main(String[] args) throws Exception {
 
@@ -52,12 +47,12 @@ public final class Application {
                                          .orElseGet(Application::getLocationFromClasspath)
                                          .orElse(null); // not pretty
 
-        final String apiKey = System.getProperty("api.key", API_KEY); // FIXME delete default
-        final String apiSecret = System.getProperty("api.secret", API_SECRET); // FIXME delete default
+        final String apiKey = System.getProperty("api.key");
+        final String apiSecret = System.getProperty("api.secret");
 
-        final String baseUrl = host + ":" + port;
+        final String baseUrl = System.getProperty("external.url", "");
 
-        final String fullVxmlFetchPath = baseUrl + "/survey/fetch";
+        final String fullVxmlFetchPath = baseUrl + "/survey/fetch/";
         final String fullErrorPath = baseUrl + "/report/error";
         final String fullStatusPath = baseUrl + "/report/status";
 
