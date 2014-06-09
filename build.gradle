@@ -1,5 +1,3 @@
-import com.sun.org.apache.bcel.internal.util.ClassPath;
-
 apply plugin: 'java'
 apply plugin: 'eclipse'
 
@@ -8,10 +6,13 @@ apply plugin: 'application'
 sourceCompatibility = '1.8'
 mainClassName = 'com.lpedrosa.app.Application'
 
-
 repositories {
     mavenLocal()
     mavenCentral()
+}
+
+configurations {
+    capsule
 }
 
 eclipse {
@@ -22,7 +23,6 @@ eclipse {
 }
 
 dependencies {
-    
     compile 'com.sparkjava:spark-core:2.0.0'
     
     compile 'org.apache.httpcomponents:fluent-hc:4.3.2'
@@ -31,8 +31,31 @@ dependencies {
     compile 'org.slf4j:slf4j-api:1.7.7'
     runtime 'org.slf4j:slf4j-jdk14:1.7.7'
     
+    // capsule stuff
+    capsule 'co.paralleluniverse:capsule:0.5.0'
+    
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-core:1.9.5'
+}
+
+task fullCapsule(type: Jar, dependsOn: jar) {
+    description = 'Creates a runnable uberjar of this project'
+    
+    archiveName = 'vxml-survey-capsule.jar'
+    
+    from jar
+    from { configurations.runtime }
+    from(configurations.capsule.collect { zipTree(it) })
+    
+    manifest {
+        attributes(
+            'Main-Class' : 'Capsule',
+            'Application-Class' : mainClassName,
+            'Min-Java-Version' : '1.8.0',
+            'JVM-Args' : run.jvmArgs.join(' '),
+            'System-Properties' : run.systemProperties.collect { k,v -> "$k=$v" }.join(' '),
+        )
+    }
 }
 
 task wrapper(type: Wrapper) {
