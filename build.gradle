@@ -30,6 +30,9 @@ dependencies {
 
     compile 'org.slf4j:slf4j-api:1.7.7'
     runtime 'org.slf4j:slf4j-jdk14:1.7.7'
+
+    // try lib
+    compile files('libs/try.jar')
     
     // capsule stuff
     capsule 'co.paralleluniverse:capsule:0.5.0'

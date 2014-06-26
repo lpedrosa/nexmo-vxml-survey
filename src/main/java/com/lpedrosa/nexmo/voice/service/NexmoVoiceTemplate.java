@@ -9,9 +9,9 @@ import java.util.Optional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.lpedrosa.common.http.HttpOperations;
-import com.lpedrosa.common.util.Try;
 import com.lpedrosa.nexmo.voice.model.NexmoCallResponse;
 import com.lpedrosa.nexmo.voice.model.NexmoCallResponse.CallStatus;
+import com.lpedrosa.util.Try;
 
 public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
 
@@ -91,7 +91,6 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
         bodyParams.put("from", from);
         bodyParams.put("to", to);
 
-        // FIXME these methods should not be hardcoded
         registerIfPresent(bodyParams, VXMLLocation, "answer", "GET");
         registerIfPresent(bodyParams, errorCallbackUrl, "error", "POST");
         registerIfPresent(bodyParams, statusCallbackUrl, "status", "POST");
@@ -129,7 +128,8 @@ public final class NexmoVoiceTemplate implements NexmoVoiceOperations {
         Integer value = Try.success(status)
                            .map(obj -> (String)obj)
                            .map(Integer::parseInt)
-                           .orElseGet(() -> (Integer)status);
+                           .orElseGet(() -> (Integer)status)
+                           .orElse(-1);
         return CallStatus.getByStatusCode(value);
     }
 

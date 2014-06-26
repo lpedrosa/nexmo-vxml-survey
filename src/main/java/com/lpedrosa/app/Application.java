@@ -19,7 +19,6 @@ import spark.SparkBase;
 
 import com.lpedrosa.common.http.FluentClientWrapper;
 import com.lpedrosa.common.http.HttpOperations;
-import com.lpedrosa.common.util.Try;
 import com.lpedrosa.nexmo.voice.model.NexmoCallResponse;
 import com.lpedrosa.nexmo.voice.service.NexmoVoiceOperations;
 import com.lpedrosa.nexmo.voice.service.NexmoVoiceTemplate;
@@ -27,6 +26,7 @@ import com.lpedrosa.nexmo.voice.service.NexmoVoiceTemplate.ResponseType;
 import com.lpedrosa.survey.model.Survey;
 import com.lpedrosa.survey.service.SurveyFetcher;
 import com.lpedrosa.survey.service.SurveyFetcherImpl;
+import com.lpedrosa.util.Try;
 
 public final class Application {
 
@@ -114,17 +114,29 @@ public final class Application {
 
         // Report handlers
         post("/report/error", (req, resp) -> {
-
-            log.info("ERROR REPORT");
+            log.info("ERROR REPORT POST");
             printAllRequestInfo(req);
 
             resp.status(HttpStatus.SC_OK);
             return "OK";
         });
 
-        post("/report/status", (req, resp) -> {
+        get("/report/error", (req, resp) ->{
+            log.info("ERROR REPORT GET");
+            printAllRequestInfo(req);
 
-            log.info("STATUS REPORT");
+            resp.status(HttpStatus.SC_OK);
+            return "OK";
+        });
+        post("/report/status", (req, resp) -> {
+            log.info("STATUS REPORT POST");
+            printAllRequestInfo(req);
+
+            resp.status(HttpStatus.SC_OK);
+            return "OK";
+        });
+        get("/report/status", (req, resp) -> {
+            log.info("STATUS REPORT GET");
             printAllRequestInfo(req);
 
             resp.status(HttpStatus.SC_OK);
@@ -133,6 +145,10 @@ public final class Application {
     }
 
     private static void printAllRequestInfo(Request req) {
+        System.out.println("path: " + req.pathInfo());
+        System.out.println("query params:");
+        req.queryMap().toMap()
+                      .forEach((name, value) -> System.out.println(name + ":" + value));
         System.out.println("headers:");
         req.headers().stream()
                      .map(headerName -> Arrays.asList(headerName, req.headers(headerName)))
